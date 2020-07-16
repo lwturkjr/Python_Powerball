@@ -67,12 +67,13 @@ def power_ball(): # Get the random power ball "Red ball"
     return pick
 
 def frequency():
-    draw_history = get_drawing_history()
-    #for x in draw_history:
+    oldest_date = str(input("In put the oldest date in YYYY-MM-DD format: "))
+    for x in draw_history:
+        if x[0] 
 
     print(draw_history)
 
-frequency()
+frequency(oldest_date)
 
 #white_balls = white_balls()
 #power_ball = power_ball()
