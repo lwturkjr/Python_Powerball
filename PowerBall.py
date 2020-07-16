@@ -1,11 +1,10 @@
 #!/us/bin/env python
 #===========================================================================================================================
 # Powerball Frequency  analyzer and quick pick
-# I will also see if we can also analyze hot/cold numbers
 # basically a python re-write of https://github.com/toastyxen/Old_Perl_Projects/blob/master/lotto/pbhist00.pl
 # with functionality of this https://github.com/toastyxen/Old_Perl_Projects/blob/master/lotto/powerballnew.pl
 # Except powerball changed to 26 power ball numbers, as of April 2020 they used to do 35, while
-# They increased the number of white balls from 59 to 69 (lol nice)
+# They increased the number of white balls from 59 to 69
 # They also removed the winnums-text.txt and have a search fucntion, so we'll need to figure out how to get the history
 # Author: Lloyd Turk Jr.
 #===========================================================================================================================
@@ -16,20 +15,40 @@ import os
 import urllib
 import urllib.request as ur
 import json
+import time
 from datetime import datetime
 
-
+start_time = time.time()
 system_random = random.SystemRandom
 random.seed(system_random)
 
 def get_drawing_history(): 
-    url = "https://data.ny.gov/api/views/d6yy-54nr/rows.json"
+    url = "https://data.ny.gov/api/views/d6yy-54nr/rows.json" # It's on data.gov from NY
     response = ur.urlopen(url)
-    data = json.loads(response.read())
-    return data
+    json_data = json.loads(response.read())
+    #print(json_data.keys())
 
-get_drawing_history()
+    raw_data = json_data["data"]
+    raw_list = []
+    for x in raw_data:
+        raw_list.extend((x[8], x[9], x[10]))
+    
+    chunked_data_list = []
+    for x in range(0, len(raw_list), 3):
+        chunk = raw_list[x:x + 3]
+        chunked_data_list.append(chunk)
+        
+    new_data_list = []
+    for x in chunked_data_list: # This works, it seems like it could still be more optimized though
+        raw_date_time_str = x[0] # Raw date/time string from the json
+        date_time_str = datetime.strptime(raw_date_time_str, "%Y-%m-%dT%H:%M:%S") # Cleaned up date/time string
+        date_str = date_time_str.strftime("%Y-%m-%d") # Get rid of time part, we don't need it, I'm sure there is an easier/lighter way to do this, but this works for now
+            
+        new_data_list.append([date_str, x[1], x[2]])
 
+    #print(new_data_list)
+    return new_data_list
+        
 def white_balls(): # Get the 5 random numbers for the white balls
     nums = []
     count = 1
@@ -38,19 +57,29 @@ def white_balls(): # Get the 5 random numbers for the white balls
         nums.append(pick) # Append them to the list
         count = count+1
 
-    nums.sort()
+    nums.sort() # Sort list for readability, and makes it easier when filling out the number slips 
     
     return nums # Return the list
 
 # We also need the power ball
-
 def power_ball(): # Get the random power ball "Red ball"
     pick = random.randint(1, 26)
     return pick
 
+def frequency():
+    draw_history = get_drawing_history()
+    #for x in draw_history:
+
+    print(draw_history)
+
+frequency()
+
 #white_balls = white_balls()
 #power_ball = power_ball()
-
+#print("=============================================================")
 #print("Quick pick numbers: " + str(white_balls) +" "+ str(power_ball))
+#print("=============================================================")
+
+print("--- %s seconds ---" % (time.time() - start_time))
 
 
