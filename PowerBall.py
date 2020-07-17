@@ -18,6 +18,7 @@ import pandas as pd
 import json
 import time
 from datetime import datetime
+from collections import defaultdict
 
 start_time = time.time()
 system_random = random.SystemRandom
@@ -70,7 +71,7 @@ def power_ball(): # Get the random power ball "Red ball"
 def frequency(): # There has to be a more effecient way to do this, this works for now though.
     data = get_drawing_history()
     
-    #oldest_date = str(input("In put the oldest date in YYYY-MM-DD format: "))
+    #oldest_date = str(input("In put the oldest date in YYYY-MM-DD format: ")) # For custom date input
     oldest_date = "2020-04-08" # This is the latest rule change
     #oldest_date = "2010-02-03" # The oldest date the data set goes back to
 
@@ -118,33 +119,75 @@ def frequency(): # There has to be a more effecient way to do this, this works f
     white_ball_dict = {i:white_ball_list.count(i) for i in white_ball_list}
     pb_dict = {i:pb_list.count(i) for i in pb_list}
 
-    # Get most popular powerball
-    pb_all_values = pb_dict.values()
-    pb_max_value = max(pb_all_values)
-    pb_most_pop = max(pb_dict, key=pb_dict.get)
+    # Get powerball values and number of times they've been drawn
+    #pb_all_values = pb_dict.values() # Get values from dict
+    # Maximum value for PB
+    pb_max_value = max(pb_dict.values()) # Find the most commonly drawn powerball number
+    
+    # Maximum secondary value for PB
+    pb_max_secondary = 0
+    for i in pb_dict.values(): # Find the second most commonly drawn powerball number
+        if(i > pb_max_secondary and i < pb_max_value):
+            pb_max_secondary = i
+
+    print("========================================================================")
+    print("All numbers drawn for PB with number of times drawn, in given date range")
+    print("Number:Number of times drawn")
+    print(pb_dict)
+    #for key, value in pb_dict.items(): # Print all pb and number of times drawn
+    #    print(str(key) + ":" + str(value))
+    print("========================================================================")
+    print("Most commonly drawn Powerball(s) since given date: ")
+    print("Number:Number of times drawn")
+    for key, value in pb_dict.items():
+        if value == pb_max_value: # Print pb(s) with highest draw rate
+            print(str(key) + ":" + str(value))
+    print("========================================================================")
+    print("Second most commonly drawn Powerball(s) since given date: ")
+    print("Number:Number of times drawn")
+    for key, value in pb_dict.items():
+        if value == pb_max_secondary: # Print pb(s) with highest draw rate
+            print(str(key) + ":" + str(value))
+    print("========================================================================")
+
+    # Get white ball values and number of times they've been drawn
+    #wb_all_values = white_ball_dict.values()
+    wb_max_value = max(white_ball_dict.values())
+    # Maximum secondary value for PB
+    wb_max_secondary = 0
+    for i in white_ball_dict.values(): # Find the second most commonly drawn powerball number
+        if(i > wb_max_secondary and i < wb_max_value):
+            wb_max_secondary = i
+    print("All numbers drawn with number of times drawn, in given date range")
+    print("Number:Number of times drawn")
+    print(white_ball_dict)
+    #for key, value in white_ball_dict.items(): # Print all pb and number of times drawn
+    #    print(str(key) + ":" + str(value))
+    print("========================================================================")
+    print("Most commonly drawn number(s) since given date: ")
+    print("Number:Number of times drawn")
+    for key, value in white_ball_dict.items():
+        if value == wb_max_value: # Print wb(s) with highest draw rate
+            print(str(key) + ":" + str(value))
+    print("========================================================================")
+    print("Second most commonly drawn number(s) since given date: ")
+    print("Number:Number of times drawn")
+    for key, value in white_ball_dict.items():
+        if value == wb_max_secondary: # Print wb(s) with highest draw rate
+            print(str(key) + ":" + str(value))
+    print("========================================================================")
+    
 
 
-    #white_ball_nums = []
-    #for x in range(1, 70):
-    #    white_ball_nums.append(x)
-    #pb_nums = []
-    #for x in range(1, 27):
-    #    pb_nums.append(x)
+white_balls = white_balls()
+power_ball = power_ball()
+print("========================================================================")
+print("Random quick pick numbers: " + str(white_balls) +" "+ str(power_ball))
+#print("========================================================================")
 
-    print(pb_all_values)
-    #print("White ball dict: " + str(white_ball_dict))
-    #print("All Balls list " + str(split_ball_list))
-    #print("All PB draws for the given time frame " + str(pb_dict))
-    #print(str(pb_most_pop) + " is the most recurring power ball value for the given time span with " + str(pb_max_value) + " draws.")
-
-#get_drawing_history()
 frequency()
 
-#white_balls = white_balls()
-#power_ball = power_ball()
-#print("=============================================================")
-#print("Quick pick numbers: " + str(white_balls) +" "+ str(power_ball))
-#print("=============================================================")
+print('This program is just for frequency analysis and a "Quick Pick" random \nnumber generator making no pretense at predictive accuracy')
 
 print("--- %s seconds ---" % (time.time() - start_time))
 
