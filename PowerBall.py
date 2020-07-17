@@ -189,6 +189,4 @@ frequency()
 
 print('This program is just for frequency analysis and a "Quick Pick" random \nnumber generator making no pretense at predictive accuracy')
 
-print("--- %s seconds ---" % (time.time() - start_time))
-
-
+#print("--- %s seconds ---" % (time.time() - start_time)) # For debugging to make sure it didn't take an inexorpanant amount of time to run
