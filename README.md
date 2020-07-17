@@ -4,3 +4,5 @@ This script aims to analyze the frequency of Powerball numbers appearing and gen
 You should be able to download it and just run the python file.
 ### Prerequisites
 python 3
+pandas python lib (pip install pandas)
+

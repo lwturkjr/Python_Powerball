@@ -14,6 +14,7 @@ import random
 import os
 import urllib
 import urllib.request as ur
+import pandas as pd
 import json
 import time
 from datetime import datetime
@@ -29,25 +30,25 @@ def get_drawing_history():
     #print(json_data.keys())
 
     raw_data = json_data["data"]
-    raw_list = []
+    raw_list = [] #
     for x in raw_data:
-        raw_list.extend((x[8], x[9], x[10]))
+        raw_list.extend((x[8], x[9]))
     
     chunked_data_list = []
-    for x in range(0, len(raw_list), 3):
-        chunk = raw_list[x:x + 3]
+    for x in range(0, len(raw_list), 2):
+        chunk = raw_list[x:x + 2]
         chunked_data_list.append(chunk)
         
-    new_data_list = []
+    final_data_list = []
     for x in chunked_data_list: # This works, it seems like it could still be more optimized though
         raw_date_time_str = x[0] # Raw date/time string from the json
         date_time_str = datetime.strptime(raw_date_time_str, "%Y-%m-%dT%H:%M:%S") # Cleaned up date/time string
         date_str = date_time_str.strftime("%Y-%m-%d") # Get rid of time part, we don't need it, I'm sure there is an easier/lighter way to do this, but this works for now
             
-        new_data_list.append([date_str, x[1], x[2]])
+        final_data_list.append([date_str, x[1]])
 
-    #print(new_data_list)
-    return new_data_list
+    #print(final_data_list)
+    return final_data_list
         
 def white_balls(): # Get the 5 random numbers for the white balls
     nums = []
@@ -66,14 +67,78 @@ def power_ball(): # Get the random power ball "Red ball"
     pick = random.randint(1, 26)
     return pick
 
-def frequency():
-    oldest_date = str(input("In put the oldest date in YYYY-MM-DD format: "))
-    for x in draw_history:
-        if x[0] 
+def frequency(): # There has to be a more effecient way to do this, this works for now though.
+    data = get_drawing_history()
+    
+    #oldest_date = str(input("In put the oldest date in YYYY-MM-DD format: "))
+    oldest_date = "2020-04-08" # This is the latest rule change
+    #oldest_date = "2010-02-03" # The oldest date the data set goes back to
 
-    print(draw_history)
+    dates = pd.date_range(start=oldest_date, end=datetime.today()).to_pydatetime().tolist()
+    
+    date_list = []
+    for dateTimeObj  in dates:
+        date_str = dateTimeObj.strftime("%Y-%m-%d")
+        date_list.append(date_str)
 
-frequency(oldest_date)
+    ball_list = []
+    for x in data:
+        if x[0] in date_list:
+            ball_list.append(x[1])
+
+    split_list = []
+    for x in ball_list:
+        split = x.split()
+        split_list.append(split)
+    
+    split_ball_list = []
+    for i in split_list:
+        for j in i:
+            split_ball_list.append(j)
+    
+    pb_list = split_ball_list[5::6]
+
+    del split_ball_list[5::6]
+
+    white_ball_list = split_ball_list
+
+    
+    white_ball_list.sort()
+    pb_list.sort()
+
+    for i in range(0, len(white_ball_list)):
+        white_ball_list[i] = int(white_ball_list[i])
+
+    for i in range(0, len(pb_list)):
+        pb_list[i] = int(pb_list[i])
+
+    #unique_pb_list = list(set(pb_list))
+    #unique_wb_list = list(set(white_ball_list))
+    
+    white_ball_dict = {i:white_ball_list.count(i) for i in white_ball_list}
+    pb_dict = {i:pb_list.count(i) for i in pb_list}
+
+    # Get most popular powerball
+    pb_all_values = pb_dict.values()
+    pb_max_value = max(pb_all_values)
+    pb_most_pop = max(pb_dict, key=pb_dict.get)
+
+
+    #white_ball_nums = []
+    #for x in range(1, 70):
+    #    white_ball_nums.append(x)
+    #pb_nums = []
+    #for x in range(1, 27):
+    #    pb_nums.append(x)
+
+    print(pb_all_values)
+    #print("White ball dict: " + str(white_ball_dict))
+    #print("All Balls list " + str(split_ball_list))
+    #print("All PB draws for the given time frame " + str(pb_dict))
+    #print(str(pb_most_pop) + " is the most recurring power ball value for the given time span with " + str(pb_max_value) + " draws.")
+
+#get_drawing_history()
+frequency()
 
 #white_balls = white_balls()
 #power_ball = power_ball()
