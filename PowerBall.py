@@ -17,7 +17,7 @@ import urllib.request as ur
 import pandas as pd
 import json
 import time
-from datetime import datetime
+from datetime import datetime, date
 from collections import defaultdict
 
 start_time = time.time()
@@ -77,43 +77,40 @@ def frequency(): # There has to be a more effecient way to do this, this works f
     oldest_date = "2020-04-08" # This is the latest rule change
     #oldest_date = "2010-02-03" # The oldest date the data set goes back to
 
-    dates = pd.date_range(start=oldest_date, end=datetime.today()).tolist()
+    today = date.today()
+
+    dates = pd.date_range(start=oldest_date, end=today) # Get a date range using pandas
     
-    date_list = []
+    date_list = [] # Converts the pandas date_range into a list. This might not be necessary, I'm sure there is a different way to do it.
     for dateTimeObj  in dates:
         date_str = dateTimeObj.strftime("%Y-%m-%d")
         date_list.append(date_str)
 
-    ball_list = []
+    ball_list = [] # This is a list, of strings being "int int int int int int"
     for x in data:
         if x[0] in date_list:
-            ball_list.append(x[1])
+            ball_list.append(x[1]) 
 
-    split_list = []
+    split_list = [] # We split these strings into lists of strings ["int", "int", "int", "int", "int", "int"], [...]
     for x in ball_list:
         split = x.split()
         split_list.append(split)
+    #print(split_list)
     
-    split_ball_list = []
+    split_ball_list = [] # We turn this lists of lists into a single list of strings
     for i in split_list:
         for j in i:
-            split_ball_list.append(j)
+            split_ball_list.append(int(j)) # We want to data in the list to be int, to use comparative operations later
     
-    pb_list = split_ball_list[5::6]
+    pb_list = split_ball_list[5::6] # Powerball is going to be every 6th entry in the list
 
-    del split_ball_list[5::6]
+    del split_ball_list[5::6] # To get white ball nums we now delete every 6th entry, which is the powerball
 
-    white_ball_list = split_ball_list
+    white_ball_list = split_ball_list # Assign to a new list name, for ease of programming
 
     
-    white_ball_list.sort()
-    pb_list.sort()
-
-    for i in range(0, len(white_ball_list)):
-        white_ball_list[i] = int(white_ball_list[i])
-
-    for i in range(0, len(pb_list)):
-        pb_list[i] = int(pb_list[i])
+    white_ball_list.sort() # Sort the list, this makes the dict we convert it to later more readable
+    pb_list.sort() # Sort the list, this makes the dict we convert it to later more readable
 
     #unique_pb_list = list(set(pb_list))
     #unique_wb_list = list(set(white_ball_list))
@@ -122,8 +119,6 @@ def frequency(): # There has to be a more effecient way to do this, this works f
     pb_dict = {i:pb_list.count(i) for i in pb_list}
 
     # Get powerball values and number of times they've been drawn
-    #pb_all_values = pb_dict.values() # Get values from dict
-    # Maximum value for PB
     pb_max_value = max(pb_dict.values()) # Find the most commonly drawn powerball number
     
     # Maximum secondary value for PB
@@ -153,7 +148,6 @@ def frequency(): # There has to be a more effecient way to do this, this works f
     print("========================================================================")
 
     # Get white ball values and number of times they've been drawn
-    #wb_all_values = white_ball_dict.values()
     wb_max_value = max(white_ball_dict.values())
     # Maximum secondary value for PB
     wb_max_secondary = 0
