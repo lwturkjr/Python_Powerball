@@ -1,6 +1,6 @@
 #!/us/bin/env python
 #===========================================================================================================================
-# Powerball Frequency  analyzer and quick pick
+# Powerball Frequency analyzer and quick pick
 # basically a python re-write of https://github.com/toastyxen/Old_Perl_Projects/blob/master/lotto/pbhist00.pl
 # with functionality of this https://github.com/toastyxen/Old_Perl_Projects/blob/master/lotto/powerballnew.pl
 # Except powerball changed to 26 power ball numbers, as of April 2020 they used to do 35, while
@@ -56,9 +56,11 @@ def white_balls(): # Get the 5 random numbers for the white balls
     count = 1
     while count <= 5: # we need 5 numbers
         pick = random.randint(1, 69) # From 1 to 69
-        nums.append(pick) # Append them to the list
-        count = count+1
-
+        if pick not in nums: # If pick isn't in nums list, append the pick to num list, it would return occasional dupes, this should fix that.
+            nums.append(pick) # Append them to the list
+            count = count+1
+        else: # Don't add anything to count
+            count = count
     nums.sort() # Sort list for readability, and makes it easier when filling out the number slips 
     
     return nums # Return the list
@@ -75,7 +77,7 @@ def frequency(): # There has to be a more effecient way to do this, this works f
     oldest_date = "2020-04-08" # This is the latest rule change
     #oldest_date = "2010-02-03" # The oldest date the data set goes back to
 
-    dates = pd.date_range(start=oldest_date, end=datetime.today()).to_pydatetime().tolist()
+    dates = pd.date_range(start=oldest_date, end=datetime.today()).tolist()
     
     date_list = []
     for dateTimeObj  in dates:
