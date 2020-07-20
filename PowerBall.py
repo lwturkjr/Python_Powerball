@@ -56,21 +56,21 @@ def white_balls(): # Get the 5 random numbers for the white balls
     count = 1
     while count <= 5: # we need 5 numbers
         pick = random.randint(1, 69) # From 1 to 69
-        if pick not in nums: # If pick isn't in nums list, append the pick to num list, it would return occasional dupes, this should fix that.
+        if pick not in nums: # If pick isn't in the nums list, append the pick to the nums list, it would return occasional dupes, this should fix that.
             nums.append(pick) # Append them to the list
             count = count+1
         else: # Don't add anything to count
             count = count
-    nums.sort() # Sort list for readability, and makes it easier when filling out the number slips 
+    nums.sort() # Sort list for readability, makes it easier when filling out the number slips 
     
     return nums # Return the list
 
 # We also need the power ball
-def power_ball(): # Get the random power ball "Red ball"
+def power_ball(): # Get the random powerball number
     pick = random.randint(1, 26)
     return pick
 
-def frequency(): # There has to be a more effecient way to do this, this works for now though.
+def frequency(): # There is probably to be a more efficient way to do this, this works for now though.
     data = get_drawing_history()
     
     #oldest_date = str(input("In put the oldest date in YYYY-MM-DD format: ")) # For custom date input
@@ -97,10 +97,10 @@ def frequency(): # There has to be a more effecient way to do this, this works f
         split_list.append(split)
     #print(split_list)
     
-    split_ball_list = [] # We turn this lists of lists into a single list of strings
+    split_ball_list = [] # We turn this list of lists into a single list of strings
     for i in split_list:
         for j in i:
-            split_ball_list.append(int(j)) # We want to data in the list to be int, to use comparative operations later
+            split_ball_list.append(int(j)) # We want the data in the list to be int, to use comparative operations later
     
     pb_list = split_ball_list[5::6] # Powerball is going to be every 6th entry in the list
 
@@ -143,7 +143,7 @@ def frequency(): # There has to be a more effecient way to do this, this works f
     print("Second most commonly drawn Powerball(s) since given date: ")
     print("Number:Number of times drawn")
     for key, value in pb_dict.items():
-        if value == pb_max_secondary: # Print pb(s) with highest draw rate
+        if value == pb_max_secondary: # Print pb(s) with second highest draw rate
             print(str(key) + ":" + str(value))
     print("========================================================================")
 
@@ -169,7 +169,7 @@ def frequency(): # There has to be a more effecient way to do this, this works f
     print("Second most commonly drawn number(s) since given date: ")
     print("Number:Number of times drawn")
     for key, value in white_ball_dict.items():
-        if value == wb_max_secondary: # Print wb(s) with highest draw rate
+        if value == wb_max_secondary: # Print wb(s) with second highest draw rate
             print(str(key) + ":" + str(value))
     print("========================================================================")
     
@@ -185,4 +185,4 @@ frequency()
 
 print('This program is just for frequency analysis and a "Quick Pick" random \nnumber generator making no pretense at predictive accuracy')
 
-#print("--- %s seconds ---" % (time.time() - start_time)) # For debugging to make sure it didn't take an inexorpanant amount of time to run
+#print("--- %s seconds ---" % (time.time() - start_time)) # For debugging to make sure it didn't take too long to run
