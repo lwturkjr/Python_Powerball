@@ -50,8 +50,8 @@ def get_drawing_history():
 
     #print(final_data_list)
     return final_data_list
-        
-def white_balls(): # Get the 5 random numbers for the white balls
+
+def quick_pick():
     nums = []
     count = 1
     while count <= 5: # we need 5 numbers
@@ -61,14 +61,13 @@ def white_balls(): # Get the 5 random numbers for the white balls
             count = count+1
         else: # Don't add anything to count
             count = count
-    nums.sort() # Sort list for readability, makes it easier when filling out the number slips 
-    
-    return nums # Return the list
+    nums.sort() # Sort list for readability, makes it easier when filling out the number slips
 
-# We also need the power ball
-def power_ball(): # Get the random powerball number
-    pick = random.randint(1, 26)
-    return pick
+    power_ball = random.randint(1, 26)
+
+    print("========================================================================")
+    print("Random quick pick numbers: " + str(nums) +" "+ str(power_ball))
+    #print("========================================================================")
 
 def frequency(): # There is probably to be a more efficient way to do this, this works for now though.
     data = get_drawing_history()
@@ -172,17 +171,10 @@ def frequency(): # There is probably to be a more efficient way to do this, this
         if value == wb_max_secondary: # Print wb(s) with second highest draw rate
             print(str(key) + ":" + str(value))
     print("========================================================================")
+    print('This program is just for frequency analysis and a "Quick Pick" random \nnumber generator making no pretense at predictive accuracy')
+
     
-
-
-white_balls = white_balls()
-power_ball = power_ball()
-print("========================================================================")
-print("Random quick pick numbers: " + str(white_balls) +" "+ str(power_ball))
-#print("========================================================================")
-
+quick_pick()
 frequency()
-
-print('This program is just for frequency analysis and a "Quick Pick" random \nnumber generator making no pretense at predictive accuracy')
 
 #print("--- %s seconds ---" % (time.time() - start_time)) # For debugging to make sure it didn't take too long to run
