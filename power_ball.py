@@ -1,5 +1,5 @@
-"""
 #!/usr/bin/env python
+"""
 #==============================================================================================
 # Powerball Frequency analyzer and quick pick
 # basically a python re-write of
