@@ -14,6 +14,7 @@
 
 import random
 import os
+from base64 import b64encode
 #import urllib
 import urllib.request as ur
 import json
@@ -24,8 +25,9 @@ from datetime import datetime, date
 import pandas as pd
 
 #START_TIME = time.time()
-SYSTEM_RANDOM = os.urandom
-random.seed(SYSTEM_RANDOM)
+SYSTEM_RANDOM = os.urandom(64)
+seed = b64encode(SYSTEM_RANDOM).decode('utf-8')
+random.seed(str(seed))
 
 def get_drawing_history():
     """Get the data from online"""
