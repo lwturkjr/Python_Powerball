@@ -14,7 +14,7 @@
 
 import random
 import os
-from base64 import b64encode
+#from base64 import b64encode
 #import urllib
 import urllib.request as ur
 import json
@@ -25,9 +25,15 @@ from datetime import datetime, date
 import pandas as pd
 
 #START_TIME = time.time()
-SYSTEM_RANDOM = os.urandom(64)
-seed = b64encode(SYSTEM_RANDOM).decode('utf-8')
-random.seed(str(seed))
+"""
+#SYSTEM_RANDOM = os.urandom # Gives DeprecationWarning: Seeding based on hashing is deprecated
+since Python 3.9 and will be removed in a subsequent version. The only 
+supported seed types are: None, int, float, str, bytes, and bytearray.
+random.seed(SYSTEM_RANDOM)
+"""
+SYSTEM_RANDOM = os.urandom(64) # Seems to resolve this
+#seed = b64encode(SYSTEM_RANDOM).decode('utf-8') # This was another option to resolve it then random.seed(str(seed))
+random.seed(SYSTEM_RANDOM)
 
 def get_drawing_history():
     """Get the data from online"""
