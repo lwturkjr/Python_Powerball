@@ -3,9 +3,9 @@
 #==============================================================================================
 # Powerball Frequency analyzer and quick pick
 # basically a python re-write of
-# https://github.com/toastyxen/Old_Perl_Projects/blob/master/lotto/pbhist00.pl
+# https://github.com/lwturkjr/Old_Perl_Projects/blob/master/lotto/pbhist00.pl
 # with functionality of this
-# https://github.com/toastyxen/Old_Perl_Projects/blob/master/lotto/powerballnew.pl
+# https://github.com/lwturkjr/Old_Perl_Projects/blob/master/lotto/powerballnew.pl
 # Except powerball changed to 26 power ball numbers, as of April 2020 they used to do 35, while
 # They increased the number of white balls from 59 to 69
 # Author: Lloyd Turk Jr.
