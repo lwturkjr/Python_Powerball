@@ -91,8 +91,9 @@ def get_dates():
     """Analyze frequency of numbers"""
     # For custom date input
     #oldest_date = str(input("In put the oldest date in YYYY-MM-DD format: ")) 
-    oldest_date = "2020-04-08" # This is the latest rule change
+    #oldest_date = "2020-04-08" # This is the latest rule change
     #oldest_date = "2010-02-03" # The oldest date the data set goes back to
+    oldest_date = input("Please enter a date in YYYY-MM-DD format: ")
 
     today = date.today()
 
@@ -163,6 +164,20 @@ def get_ball_frequency():
     for i in pb_dict.values(): # Find the second most commonly drawn powerball number
         if(i > pb_max_secondary and i < pb_max_value):
             pb_max_secondary = i
+    
+    # Find the least commonly drawn MegaBall number(s)
+    # Need to add something to find 0 values
+    pb_z = []
+    for x in range(1, 26):
+        if x not in pb_list:
+            pb_z.append(x)
+
+    # Find the least commonly drawn white ball numbers
+    # Need to add something to find 0 values
+    wb_z = []
+    for x in range(1, 69):
+        if x not in white_ball_list:
+            wb_z.append(x)    
 
     print("========================================================================")
     print("All numbers drawn for PB with number of times drawn, in given date range")
@@ -182,6 +197,11 @@ def get_ball_frequency():
     for key, value in pb_dict.items():
         if value == pb_max_secondary: # Print pb(s) with second highest draw rate
             print(str(key) + ":" + str(value))
+    if len(pb_z) >= 1:
+        print("========================================================================")
+        print("These power ball numbers have been drawn 0 times since the given date")
+        for x in pb_z:
+            print(x)
     print("========================================================================")
 
     # Get white ball values and number of times they've been drawn
@@ -211,6 +231,11 @@ def get_ball_frequency():
     print("========================================================================")
     print('This program is just for frequency analysis and a "Quick Pick" random'
           '\nnumber generator making no pretense at predictive accuracy')
+    if len(wb_z) >= 1:
+        print("========================================================================")
+        print("These white ball numbers have been drawn 0 times since the given date")
+        for x in wb_z:
+            print(x)
 
 
 quick_pick()
