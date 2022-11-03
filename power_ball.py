@@ -90,10 +90,9 @@ def quick_pick():
 def get_dates():
     """Analyze frequency of numbers"""
     # For custom date input
-    #oldest_date = str(input("In put the oldest date in YYYY-MM-DD format: ")) 
-    #oldest_date = "2020-04-08" # This is the latest rule change
+    #oldest_date = str(input("Please enter a date in YYYY-MM-DD format: ")) 
+    oldest_date = "2020-04-08" # This is the latest rule change
     #oldest_date = "2010-02-03" # The oldest date the data set goes back to
-    oldest_date = input("Please enter a date in YYYY-MM-DD format: ")
 
     today = date.today()
 
@@ -165,6 +164,10 @@ def get_ball_frequency():
         if(i > pb_max_secondary and i < pb_max_value):
             pb_max_secondary = i
     
+    pb_min_value = min(pb_dict.values())
+    
+    wb_min_value = min(white_ball_dict.values())
+
     # Find the least commonly drawn MegaBall number(s)
     # Need to add something to find 0 values
     pb_z = []
@@ -197,6 +200,14 @@ def get_ball_frequency():
     for key, value in pb_dict.items():
         if value == pb_max_secondary: # Print pb(s) with second highest draw rate
             print(str(key) + ":" + str(value))
+    
+    print("========================================================================")
+    print("Least commonly drawn Powerball(s) since given date (not 0 times): ")
+    print("Number:Number of times drawn")
+    for key, value in pb_dict.items():
+        if value == pb_min_value: # Print PB(s) with lowest draw rate
+            print(str(key) + ":" + str(value))
+
     if len(pb_z) >= 1:
         print("========================================================================")
         print("These power ball numbers have been drawn 0 times since the given date")
@@ -229,13 +240,19 @@ def get_ball_frequency():
         if value == wb_max_secondary: # Print wb(s) with second highest draw rate
             print(str(key) + ":" + str(value))
     print("========================================================================")
-    print('This program is just for frequency analysis and a "Quick Pick" random'
-          '\nnumber generator making no pretense at predictive accuracy')
+    print("Least commonly drawn number(s) since given date: ")
+    print("Number:Number of times drawn")
+    for key, value in white_ball_dict.items():
+        if value == wb_min_value: # Print wb(s) with lowest draw rate
+            print(str(key) + ":" + str(value))
     if len(wb_z) >= 1:
         print("========================================================================")
         print("These white ball numbers have been drawn 0 times since the given date")
         for x in wb_z:
             print(x)
+    print("========================================================================")
+    print('This program is just for frequency analysis and a "Quick Pick" random'
+          '\nnumber generator making no pretense at predictive accuracy')
 
 
 quick_pick()
